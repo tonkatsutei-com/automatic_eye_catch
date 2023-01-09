@@ -9,19 +9,16 @@ if (!defined('ABSPATH')) exit;
 
 use tonkatsutei\automatic_eye_catch\base\_options;
 use tonkatsutei\automatic_eye_catch\base\_common;
+use tonkatsutei\automatic_eye_catch\no_image\_no_image;
 
 class _eye_catch
 {
     // 投稿時にアイキャッチを設定する
-    public static function set_when_posts(object $post): void
+    public static function set_when_posts(int $post_id, object $post): void
     {
-        // 対象記事のID
-        $post_id = $post->ID;
-
         // アイキャッチが設定済みの際は抜ける
         $flug = has_post_thumbnail($post_id);
         if ($flug === true) {
-            _options::update("error", "has post thumbnail");
             return;
         }
 
@@ -34,26 +31,22 @@ class _eye_catch
         $html = str_replace("\r", "\n", $html);
         $html = str_replace("\n", " ", $html);
         $html = str_replace("  ", " ", $html);
-        _options::update("html", $html);
 
         // 最初のimgタグ
         $re = _common::between('<img', '>', $html);
         if (count($re) === 0) {
-            _options::update("no img_tag", $html);
+            _no_image::set_no_image($post_id);
             return;
         }
-        _options::update("img_tag_re", serialize($re));
         $img_tag = $re[0];
-        _options::update("img_tag", $img_tag);
 
         // 画像のURL
         $re = _common::between("src='", "'", $img_tag);
         if (count($re) === 0) {
-            _options::update("no url", $img_tag);
+            _no_image::set_no_image($post_id);
             return;
         }
         $url = $re[0];
-        _options::update("url", $url);
 
         if (!function_exists('media_handle_upload')) {
             require_once(ABSPATH . 'wp-admin/includes/image.php');
@@ -62,7 +55,6 @@ class _eye_catch
         }
 
         // 外部サイトの画像かどうか
-        _options::update("wp_upload_dir", wp_upload_dir()['url']);
         if (strpos($url, wp_upload_dir()['url']) === false) {
             $gaibu_flug = true;
         } else {
@@ -78,28 +70,23 @@ class _eye_catch
             if ($img_id === 0) {
                 $re = _common::between("class='wp-image-", "'/", $img_tag);
                 if (count($re) === 0) {
-                    _options::update("no wp-image", $img_tag);
+                    _no_image::set_no_image($post_id);
                     return;
                 } else {
                     $img_id = (int)$re[0];
                 }
             }
-            _options::update("added img_id", (string)$img_id);
 
             // 3. 1-2で取得できなかった時は登録
             $file_name = basename($url);
-            _options::update("file_name", $file_name);
             if ($img_id === 0) {
                 $f = [
                     'name' => $file_name,
                     'tmp_name' => $url,
                 ];
                 $img_id = media_handle_sideload($f);
-                _options::update("add img_id", (string)$img_id);
             }
         }
-
-
 
         // メディアに登録し画像のIDを取得（外部サイトの画像）
         if ($gaibu_flug) {
@@ -108,16 +95,13 @@ class _eye_catch
 
         // IDを取得できなかった時は抜ける
         if ($img_id === 0 || $img_id === null) {
-            _options::update("no img_id", "error");
+            _no_image::set_no_image($post_id);
             return;
         }
 
         //アイキャッチ画像に指定
         $res = set_post_thumbnail($post_id, $img_id);
-
-        _options::update("img_id", (string)$res);
     }
-
 
     /**
      * 指定の URL の画像をダウンロードして、メディア ライブラリへ登録します。

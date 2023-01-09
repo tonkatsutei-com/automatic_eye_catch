@@ -15,17 +15,8 @@ class _base
 
     public static function plugin_on(): void
     {
-        // 管理者メニュー
-        //add_action('admin_menu', 'tonkatsutei\automatic_eye_catch\control_panel\_control_panel::show_admin_menu');
-
         // 記事公開時にアイキャッチを設定する
-        // 更新時には発動しない
-        add_action('new_to_publish', self::$_eye_catch . '::set_when_posts');
-        add_action('pending_to_publish', self::$_eye_catch . '::set_when_posts');
-        add_action('draft_to_publish', self::$_eye_catch . '::set_when_posts');
-        add_action('auto-draft_to_publish', self::$_eye_catch . '::set_when_posts');
-        add_action('future_to_publish', self::$_eye_catch . '::set_when_posts');
-        add_action('private_to_publish', self::$_eye_catch . '::set_when_posts');
+        add_action('publish_post', self::$_eye_catch . '::set_when_posts', 10, 2);
     }
 
     public static function autoload(): void
