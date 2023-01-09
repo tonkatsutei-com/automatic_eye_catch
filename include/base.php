@@ -11,12 +11,13 @@ _base::plugin_on();
 
 class _base
 {
-    private static string $_eye_catch = 'tonkatsutei\automatic_eye_catch\eye_catch\_eye_catch';
-
     public static function plugin_on(): void
     {
+        // 未設定の投稿にアイキャッチを設定する
+        add_action('init', 'tonkatsutei\automatic_eye_catch\set_to_posts_unset\_set_to_posts_unset::set_to_posts_unset');
+
         // 記事公開時にアイキャッチを設定する
-        add_action('publish_post', self::$_eye_catch . '::set_when_posts', 10, 2);
+        add_action('publish_post', 'tonkatsutei\automatic_eye_catch\eye_catch\_eye_catch::set_when_posts', 10, 2);
     }
 
     public static function autoload(): void

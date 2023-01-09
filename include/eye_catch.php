@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace tonkatsutei\automatic_eye_catch\eye_catch;
 
 if (!defined('ABSPATH')) exit;
