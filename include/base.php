@@ -27,11 +27,6 @@ class _base
             require_once($file);
         }
     }
-
-    public static function remove_menus(): void
-    {
-        remove_submenu_page('options-general.php', 'options-media.php');
-    }
 }
 
 class _common
