@@ -2,9 +2,9 @@
 /* 
 Plugin Name: Automatic Eye Catch - Beta
 Plugin URI: https://manual.tonkatsutei.com/aec/
-Description: アイキャッチを自動的に設定します。<br><a href="https://manual.tonkatsutei.com/aec/">ユーザーズマニュアル</a>
+Description: アイキャッチを自動的に設定します。<a href="https://manual.tonkatsutei.com/aec/">ユーザーズマニュアル</a>
 Author: ton活亭
-Version: 0.3.1
+Version: 0.3.2
 Author URI: https://twitter.com/tonkatsutei
 */
 
@@ -33,7 +33,7 @@ require_once('include/base.php');
 
 // バージョン履歴
 $version_history = <<<EOD
-[Ver.0.3.1] 2023/01/13
+[Ver.0.3.2] 2023/01/13
 ・説明文にマニュアルのリンクを入れた
 
 [Ver.0.3.0] 2023/01/13
