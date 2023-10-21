@@ -13,8 +13,10 @@ use tonkatsutei\automatic_eye_catch\no_image\_no_image;
 class _eye_catch
 {
 	// 投稿時にアイキャッチを設定する
-	public static function set_when_posts(int $post_id, object $post): void
+	public static function set_when_posts(object $post): void
 	{
+		$post_id = $post->ID;
+
 		// アイキャッチが設定済みの際は抜ける
 		$flug = has_post_thumbnail($post_id);
 		if ($flug === true) {

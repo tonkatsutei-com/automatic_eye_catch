@@ -36,7 +36,7 @@ class _set_to_posts_unset
 		foreach ($dsn as $i) {
 			$post_id = (int)$i->id;
 			$post    = get_post($post_id);
-			_eye_catch::set_when_posts($post_id, $post);
+			_eye_catch::set_when_posts($post);
 		}
 	}
 }

@@ -4,16 +4,15 @@ Plugin Name: Automatic Eye Catch - Beta
 Plugin URI: https://manual.tonkatsutei.com/aec/
 Description: アイキャッチを自動的に設定します。<a href="https://manual.tonkatsutei.com/aec/">ユーザーズマニュアル</a>
 Author: ton活亭
-Version: 0.4.0
+Version: 0.4.1
 Author URI: https://twitter.com/tonkatsutei
 
 ▼ update
 コミット&GitHubにプッシュするだけ
 
 ▼ バージョンアップ内容
-0.4.0
-・記事投稿の判定を変更 publish_post => ***_to_publish
-・WP_MEMORY_LIMIT 256M => 512M
+0.4.1
+・不具合修正
 
 */
 
