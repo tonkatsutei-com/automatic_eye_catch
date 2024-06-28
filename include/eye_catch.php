@@ -7,6 +7,7 @@ namespace tonkatsutei\automatic_eye_catch\eye_catch;
 if (!defined('ABSPATH')) exit;
 
 use tonkatsutei\automatic_eye_catch\base\_common;
+use tonkatsutei\automatic_eye_catch\base\_options;
 use tonkatsutei\automatic_eye_catch\no_image\_no_image;
 
 class _eye_catch
@@ -100,6 +101,12 @@ class _eye_catch
 					'tmp_name' => $url,
 				];
 				$img_id = media_handle_sideload($f);
+			}
+
+			// 5. 4で登録失敗した時はNoImageにして抜ける
+			if (is_wp_error($img_id)) {
+				_no_image::set_no_image($post_id);
+				return;
 			}
 		}
 
