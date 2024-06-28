@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace tonkatsutei\automatic_eye_catch\set_to_posts_unset;
 
 use tonkatsutei\automatic_eye_catch\eye_catch\_eye_catch;
-use tonkatsutei\automatic_eye_catch\base\_options;
 
 if (!defined('ABSPATH')) exit;
 class _set_to_posts_unset
@@ -30,9 +29,7 @@ class _set_to_posts_unset
 			LIMIT       5
 		EOD;
 		$dsn = $wpdb->get_results($sql);
-		_options::update('sql', $sql);
 
-		_options::update('test', serialize($dsn));
 		foreach ($dsn as $i) {
 			$post_id = (int)$i->id;
 			$post    = get_post($post_id);

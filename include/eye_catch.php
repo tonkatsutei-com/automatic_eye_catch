@@ -6,7 +6,6 @@ namespace tonkatsutei\automatic_eye_catch\eye_catch;
 
 if (!defined('ABSPATH')) exit;
 
-use tonkatsutei\automatic_eye_catch\base\_options;
 use tonkatsutei\automatic_eye_catch\base\_common;
 use tonkatsutei\automatic_eye_catch\no_image\_no_image;
 
@@ -49,6 +48,9 @@ class _eye_catch
 		}
 		$url = $re[0];
 
+		// ファイル名
+		$file_name = basename($url);
+
 		if (!function_exists('media_handle_upload')) {
 			require_once(ABSPATH . 'wp-admin/includes/image.php');
 			require_once(ABSPATH . 'wp-admin/includes/file.php');
@@ -64,22 +66,34 @@ class _eye_catch
 
 		// WPにアップロードされた画像の場合
 		if ($gaibu_flug === false) {
-			// 1. 画像のIDを取得、未登録の場合は0が帰る
+			// 1. 画像のIDを取得、未登録の場合は0が返ってくる
 			$img_id = attachment_url_to_postid($url);
 
 			// 2. 1で取得できなかった時はimg_tagから
 			if ($img_id === 0) {
 				$re = _common::between("class='wp-image-", "'/", $img_tag);
-				if (count($re) === 0) {
-					_no_image::set_no_image($post_id);
-					return;
-				} else {
+				if (count($re) > 0) {
 					$img_id = (int)$re[0];
 				}
 			}
 
-			// 3. 1-2で取得できなかった時は登録
-			$file_name = basename($url);
+			// 3. 2でも取得できなかった時はwp_postmetaから検索
+			if ($img_id === 0) {
+				global $wpdb;
+				$table_name = $wpdb->prefix . 'postmeta';
+				$sql = <<<EOD
+				SELECT post_id
+				FROM {$table_name}
+				WHERE meta_value LIKE '%{$file_name}%'
+				LIMIT 1
+				EOD;
+				$meta_post_id = $wpdb->get_results($sql);
+				if (count($meta_post_id) > 0) {
+					$img_id = $meta_post_id[0]->post_id;
+				}
+			}
+
+			// 4. 3でも取得できなかった時は登録
 			if ($img_id === 0) {
 				$f = [
 					'name' => $file_name,
@@ -89,12 +103,12 @@ class _eye_catch
 			}
 		}
 
-		// メディアに登録し画像のIDを取得（外部サイトの画像）
+		// 外部サイトの画像の場合はメディアに登録し画像のIDを取得
 		if ($gaibu_flug) {
 			$img_id = self::insert_attachment_from_url($url, $post_id, 30);
 		}
 
-		// IDを取得できなかった時は抜ける
+		// IDを取得できなかった時はNoImageを指定して抜ける
 		if ($img_id === 0 || $img_id === null) {
 			_no_image::set_no_image($post_id);
 			return;

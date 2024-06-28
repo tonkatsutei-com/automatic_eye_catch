@@ -1,18 +1,19 @@
 <?php
 /* 
-Plugin Name: Automatic Eye Catch - Beta
+Plugin Name: Automatic Eye Catch
 Plugin URI: https://manual.tonkatsutei.com/aec/
 Description: アイキャッチを自動的に設定します。<a href="https://manual.tonkatsutei.com/aec/">ユーザーズマニュアル</a>
 Author: ton活亭
-Version: 0.4.1
+Version: 0.5.0
 Author URI: https://twitter.com/tonkatsutei
 
 ▼ update
 コミット&GitHubにプッシュするだけ
 
 ▼ バージョンアップ内容
-0.4.1
-・不具合修正
+0.5.0
+・WPによって自動リサイズされた画像にURLが差し変わっていてもアイキャッチが設定されるようにした
+・No Image が何枚も登録されないようにした
 
 */
 
