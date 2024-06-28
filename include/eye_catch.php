@@ -96,11 +96,19 @@ class _eye_catch
 
 			// 4. 3でも取得できなかった時は登録
 			if ($img_id === 0) {
-				$f = [
-					'name' => $file_name,
-					'tmp_name' => $url,
-				];
-				$img_id = media_handle_sideload($f);
+				$file_name = "AdobeStock_407233108-scaled.jpeg";
+				$content_dir = WP_CONTENT_DIR;
+				$ptn = "find {$content_dir}/uploads -name '{$file_name}'";
+				exec($ptn, $img_path);
+
+				// 実体があれば登録
+				if (isset($img_path[0])) {
+					$f = [
+						'name' => $file_name,
+						'tmp_name' => $img_path[0],
+					];
+					$img_id = media_handle_sideload($f);
+				}
 			}
 
 			// 5. 4で登録失敗した時はNoImageにして抜ける
