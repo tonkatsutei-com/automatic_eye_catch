@@ -1,18 +1,18 @@
 <?php
-/* 
+/*
 Plugin Name: Automatic Eye Catch
 Plugin URI: https://manual.tonkatsutei.com/aec/
 Description: アイキャッチを自動的に設定します。<a href="https://manual.tonkatsutei.com/aec/">ユーザーズマニュアル</a>
 Author: ton活亭
-Version: 0.5.2
+Version: 0.5.3
 Author URI: https://twitter.com/tonkatsutei
 
 ▼ update
 コミット&GitHubにプッシュするだけ
 
 ▼ バージョンアップ内容
-0.5.2
-・アップロードはしているがメディアに登録されてないときは登録
+0.5.3
+・insert_attachment_from_url()でE_ERRORの時にはnullを返すようにした
 
 */
 

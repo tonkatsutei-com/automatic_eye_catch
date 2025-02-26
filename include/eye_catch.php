@@ -139,7 +139,7 @@ class _eye_catch
 	 * @param string $url
 	 * @param int $post_id 投稿 ID。
 	 * @param int $timeout タイムアウト。デフォルトは 30 秒。
-	 * @return int|WP_Error 添付ファイル ID。失敗した場合の WP_Error オブジェクト。
+	 * @return int|WP_Error 添付ファイル ID。失敗した場合はnull
 	 */
 	public static function insert_attachment_from_url(string $url, int $post_id = 0, int $timeout = 30): ?int
 	{
@@ -154,7 +154,7 @@ class _eye_catch
 		);
 		$attachment_id = media_handle_sideload($file, $post_id);
 		if (is_wp_error($attachment_id)) {
-			@unlink($tmp_file);
+			return null;
 		}
 
 		return $attachment_id;
